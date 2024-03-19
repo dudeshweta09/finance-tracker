@@ -4,11 +4,10 @@ import { Button } from '@/components/ui/button'
 import React, { useState } from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faArrowUp, faArrowDown, faIndianRupeeSign } from "@fortawesome/free-solid-svg-icons";
-import ExpDisplay from '@/components/exp-display';
 import Model from '@/components/model';
 import InputForm from '@/components/inp-form';
-import { onAddExp } from '../db-controller';
-import { onAddInc } from '../db-controller';
+import Dbcontroller from '../db-controller';
+import { ExpenseType } from '../../../schema';
 
 
 const TrackerPage = () => {
@@ -20,16 +19,18 @@ const TrackerPage = () => {
   const onIncome = () =>{
     setIsIncClicked(true);
   }
+  
+
   return (
     <>
     {isIncClicked && (
       <Model show={isIncClicked} onClose={setIsIncClicked}>
-        <InputForm onSubmit={onAddInc}/>
+        <InputForm onSubmit={Dbcontroller.onAddInc}/>
       </Model>
     )}
     {isExpclicked && (
       <Model show={isExpclicked} onClose={setIsExpClicked}>
-        <InputForm onSubmit={onAddExp}/>
+        <InputForm onSubmit={Dbcontroller.onAddExp}/>
       </Model>
     )}
     <div className='bg-slate-900 h-screen text-white'>
