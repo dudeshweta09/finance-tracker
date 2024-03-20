@@ -12,4 +12,4 @@ export const ExInSchema = z.object({
     }),
 })
 
-export type ExpenseType = z.infer<typeof ExInSchema>
+export type ExInType = z.infer<typeof ExInSchema>

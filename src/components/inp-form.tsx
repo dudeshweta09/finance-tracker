@@ -17,7 +17,14 @@ import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
 
 const InputForm = ({ onSubmit }: any) => {
-  const {toast} = useToast();
+  const { toast } = useToast();
+  const handleToast = () => {
+    toast({
+      variant: "destructive",
+      title: "Entry",
+      description: "Entry submitted successfully",
+    });
+  };
   const form = useForm<z.infer<typeof ExInSchema>>({
     resolver: zodResolver(ExInSchema),
     defaultValues: {
@@ -26,6 +33,8 @@ const InputForm = ({ onSubmit }: any) => {
       amount: "",
     },
   });
+  
+
   return (
     <CardWrapper label="" title="">
       <Form {...form}>
@@ -83,16 +92,9 @@ const InputForm = ({ onSubmit }: any) => {
               )}
             />
           </div>
-          <Button
-          variant="outline"
-          onClick={() => {
-        toast({
-          variant: "destructive",
-          title: "Entry",
-          description: "Entry submitted successfully",
-        })
-      }}
-          >Submit</Button>
+          <Button variant="outline" onClick={()=>{handleToast()}}>
+            Submit
+          </Button>
         </form>
       </Form>
     </CardWrapper>
