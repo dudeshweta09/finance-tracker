@@ -4,14 +4,15 @@ import Image from "next/image";
 import Link from "next/link";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faQrcode } from "@fortawesome/free-solid-svg-icons";
-import Model from "@/components/model";
+import Model from "@/components/modal";
+import LoginForm from "@/components/login-form";
 
 const HomePage = () => {
-  const [modelIsOpen, setModelIsOpen] = useState(true);
+  const [modelIsOpen, setModelIsOpen] = useState(false);
   return (
     <>
     {modelIsOpen && (
-      <Model show={modelIsOpen} onClose={setModelIsOpen}><h3>I am a login page</h3></Model>
+      <Model show={modelIsOpen} onClose={setModelIsOpen}><LoginForm/></Model>
     )}
     <div className=" h-screen bg-slate-600">
       <header className=" w-1/2 mx-auto pt-5 text-white font-extrabold">

@@ -86,4 +86,5 @@
   .img{
     @apply h-full w-full rounded blur-sm hover:blur-none transition duration-75  
   }
+
 }
