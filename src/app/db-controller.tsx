@@ -2,6 +2,7 @@
 import {
   ExInType,
   LogggedInType,
+  RegisterSchema,
   RegisterType,
 } from "../../schema";
 
@@ -13,7 +14,6 @@ export const existAccount = JSON.parse(
 export const expValues = Object.values(existExp);
 export const incValues = Object.values(existInc);
 export const accValues = Object.values(existAccount);
-
 
 export default class Dbcontroller {
 
@@ -30,7 +30,7 @@ export default class Dbcontroller {
     localStorage.setItem("Fin_Exp_Add", JSON.stringify(existExp));
   };
 
-  static onAddInc = (value: ExInType) => {
+  static onAddInc = (value: ExInType, callBack:()=>void) => {
     if (existInc) {
       const emailValue = Object.values(existInc);
       for (const id of emailValue) {
@@ -41,6 +41,8 @@ export default class Dbcontroller {
     }
     existInc.push(value);
     localStorage.setItem("Fin_Inc_Add", JSON.stringify(existInc));
+    callBack();
+    return existInc
   };
 
   static onRegistration = (value: RegisterType) => {

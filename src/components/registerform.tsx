@@ -16,13 +16,14 @@ import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import CardWrapper from "./card-wrapper";
-import Dbcontroller, { existAccount } from "@/app/db-controller";
+import { existAccount } from "@/app/db-controller";
 
 const RegisterForm = () => {
   const { toast } = useToast();
   const router = useRouter();
 
 const onRegistration = (value: RegisterType) => {
+
     if (existAccount) {
       const emailValue = Object.values(existAccount);
       for (const id of emailValue) {
@@ -40,6 +41,7 @@ const onRegistration = (value: RegisterType) => {
         variant: "destructive",
         description: "Registration submitted successfully",
       });
+      router.push("/");
   };
 
   const form = useForm<z.infer<typeof RegisterSchema>>({

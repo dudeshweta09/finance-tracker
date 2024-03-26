@@ -19,14 +19,14 @@ import { useRouter } from "next/navigation";
 const InputForm = ({ onSubmit }: any) => {
   const { toast } = useToast();
   const router = useRouter();
-  const handleToast = () => {
-    toast({
-      variant: "destructive",
-      title: "Entry",
-      description: "Entry submitted successfully",
-    });
-    router.push("/");
-  };
+  // const handleToast = () => {
+  //   toast({
+  //     variant: "destructive",
+  //     title: "Entry",
+  //     description: "Entry submitted successfully",
+  //   });
+  //   router.push("/");
+  // };
   const form = useForm<z.infer<typeof ExInSchema>>({
     resolver: zodResolver(ExInSchema),
     defaultValues: {
@@ -92,12 +92,9 @@ const InputForm = ({ onSubmit }: any) => {
             )}
           />
         </div>
-        <Button
+        <Button type="submit"
           className=" mt-2"
-          onClick={() => {
-            handleToast();
-          }}
-        >
+                 >
           Submit
         </Button>
       </form>

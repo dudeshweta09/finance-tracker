@@ -14,13 +14,17 @@ import InputForm from "@/components/inp-form";
 import Dbcontroller from "../db-controller";
 import { existInc, existExp, expValues, incValues } from "../db-controller";
 import {ExpDisplay, IncDisplay} from "@/components/trans-display";
+import { ExInType } from "../../../schema";
+import { useRouter } from "next/navigation";
 
 const TrackerPage = () => {
   const [incomeReceived, setIncomeReceived] = useState("0");
   const [isExpclicked, setIsExpClicked] = useState(false);
   const [isIncClicked, setIsIncClicked] = useState(false);
+  const [existIncome, setExistIncome] = useState(existInc);
+  const router = useRouter();
   useEffect(() => {
-    let temp1 = existInc.map(function (item: any) {
+    let temp1 = existIncome.map(function (item: any) {
       return parseFloat(item.amount);
     });
     let temp2 = existExp.map(function (item: any) {
@@ -34,7 +38,7 @@ const TrackerPage = () => {
     }, 0);
     let sum3 = sum1 - sum2;
     setIncomeReceived(sum3.toString());
-  }, [incomeReceived]);
+  }, [incomeReceived,setIncomeReceived,existExp,existIncome]);
 
   const onExpense = () => {
       setIsExpClicked(true);
@@ -47,7 +51,16 @@ const TrackerPage = () => {
     <>
       {isIncClicked && (
         <Model show={isIncClicked} onClose={setIsIncClicked}>
-          <InputForm onSubmit={Dbcontroller.onAddInc} />
+          <InputForm onSubmit={(data:ExInType)=>{
+           const updatedIncome = Dbcontroller.onAddInc(data,()=>{
+              console.log(data);
+              setIsIncClicked(false)
+              setTimeout(() => {
+                router.push("/trackerpage")
+              }, 1000);
+            })
+            setExistIncome(updatedIncome);
+          }} />
         </Model>
       )}
       {isExpclicked && (

@@ -29,7 +29,7 @@ const HeaderComp = () => {
             />
           </div>
           {/* prof name */}
-          <small className=" xl:text-xl">HI, {userName}</small>
+          <small className=" text-xl">HI, {userName}</small>
         </div>
         {/* right side of header */}
         <nav className="flex items-center gap-2">
