@@ -46,6 +46,10 @@ export default class Dbcontroller {
     return existInc
   };
 
+  static onLogout = (callBack:()=>void) =>{
+    localStorage.setItem("Fin_LoggeIn_ Key", JSON.stringify(false));
+  }
+
   static onRegistration = (value: RegisterType) => {
     if (existAccount) {
       const emailValue = Object.values(existAccount);

@@ -14,7 +14,7 @@ const ChartStats = () => {
             {
               label: "Expenses",
               data: expValues.map((exp:any) => exp.amount),
-              backgroundColor: "lime",
+              backgroundColor: ["lime","red", "yellow","orange"],
               borderColor: "black"
             },
           ],
