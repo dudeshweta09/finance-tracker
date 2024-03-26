@@ -1,6 +1,7 @@
 "use client";
 import {
-  ExInType,
+  IncomeType,
+  ExpenseType,
   LogggedInType,
   RegisterSchema,
   RegisterType,
@@ -17,7 +18,7 @@ export const accValues = Object.values(existAccount);
 
 export default class Dbcontroller {
 
-  static onAddExp = (value: ExInType) => {
+  static onAddExp = (value: ExpenseType) => {
     if (existExp) {
       const emailValue = Object.values(existExp);
       for (const id of emailValue) {
@@ -30,7 +31,7 @@ export default class Dbcontroller {
     localStorage.setItem("Fin_Exp_Add", JSON.stringify(existExp));
   };
 
-  static onAddInc = (value: ExInType, callBack:()=>void) => {
+  static onAddInc = (value: IncomeType, callBack:()=>void) => {
     if (existInc) {
       const emailValue = Object.values(existInc);
       for (const id of emailValue) {
@@ -63,8 +64,7 @@ export default class Dbcontroller {
       existAccount?.filter((ud: RegisterType) => {
         return (
           ud.email == value.email &&
-          ud.password == value.password &&
-          ud.confirmpassword == ud.password
+          ud.password == value.password
         );
       })?.length > 0;
     if (loggIn) {

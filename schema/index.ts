@@ -16,6 +16,11 @@ export const RegisterSchema = z.object({
     confirmpassword: z.string().min(6,{
         message: "Password must be of 6 characters."
     }),
+}).refine((data)=>{
+    return data.password === data.confirmpassword
+},{
+    message: "Passwords do not match",
+    path: ["confirmpassword"]
 })
 
 export const LoggedInSchema = z.object({
@@ -27,7 +32,7 @@ export const LoggedInSchema = z.object({
     })
 })
 
-export const ExInSchema = z.object({
+export const IncomeSchema = z.object({
     title: z.string().min(1,{
         message: "Please enter a title."
     }),
@@ -39,6 +44,20 @@ export const ExInSchema = z.object({
     }),
 })
 
-export type ExInType = z.infer<typeof ExInSchema>
+export const ExpenseSchema = z.object({
+    title: z.string().min(1,{
+        message: "Please enter a title."
+    }),
+    description: z.string().min(1,{
+        message:"Describe to remember."
+    }),
+    amount: z.string().min(1,{
+        message: "Enter your amount"
+    }),
+    category: z.enum(["Entertainment","Food","Fuel","Others"])
+})
+
+export type ExpenseType = z.infer<typeof ExpenseSchema>
+export type IncomeType = z.infer<typeof IncomeSchema>
 export type RegisterType = z.infer<typeof RegisterSchema>
 export type LogggedInType = z.infer<typeof LoggedInSchema>

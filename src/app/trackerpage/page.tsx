@@ -10,12 +10,13 @@ import {
   faIndianRupeeSign,
 } from "@fortawesome/free-solid-svg-icons";
 import Model from "@/components/modal";
-import InputForm from "@/components/inp-form";
 import Dbcontroller from "../db-controller";
 import { existInc, existExp, expValues, incValues } from "../db-controller";
 import {ExpDisplay, IncDisplay} from "@/components/trans-display";
-import { ExInType } from "../../../schema";
+import { IncomeType, ExpenseType } from "../../../schema";
 import { useRouter } from "next/navigation";
+import IncomeForm from "@/components/income-form";
+import ExpenseForm from "@/components/expense-form";
 
 const TrackerPage = () => {
   const [incomeReceived, setIncomeReceived] = useState("0");
@@ -51,7 +52,7 @@ const TrackerPage = () => {
     <>
       {isIncClicked && (
         <Model show={isIncClicked} onClose={setIsIncClicked}>
-          <InputForm onSubmit={(data:ExInType)=>{
+          <IncomeForm onSubmit={(data:IncomeType)=>{
            const updatedIncome = Dbcontroller.onAddInc(data,()=>{
               console.log(data);
               setIsIncClicked(false)
@@ -65,7 +66,7 @@ const TrackerPage = () => {
       )}
       {isExpclicked && (
         <Model show={isExpclicked} onClose={setIsExpClicked}>
-          <InputForm onSubmit={Dbcontroller.onAddExp}></InputForm>
+          <ExpenseForm onSubmit={Dbcontroller.onAddExp}/>
         </Model>
       )}
       <div className="bg-slate-900 h-full text-white">

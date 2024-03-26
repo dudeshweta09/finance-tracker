@@ -9,7 +9,7 @@ const ChartStats = () => {
     <div>
       <Doughnut
         data={{
-          labels: expValues.map((exp:any) => exp.title),
+          labels: expValues.map((exp:any) => exp.category),
           datasets: [
             {
               label: "Expenses",

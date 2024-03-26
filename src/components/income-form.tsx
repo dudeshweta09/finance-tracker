@@ -10,15 +10,15 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { ExInSchema } from "../../schema";
+import { IncomeSchema} from "../../schema";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-import { useToast } from "@/components/ui/use-toast";
-import { useRouter } from "next/navigation";
+// import { useToast } from "@/components/ui/use-toast";
+// import { useRouter } from "next/navigation";
 
-const InputForm = ({ onSubmit }: any) => {
-  const { toast } = useToast();
-  const router = useRouter();
+const IncomeForm = ({ onSubmit }: any) => {
+  // const { toast } = useToast();
+  // const router = useRouter();
   // const handleToast = () => {
   //   toast({
   //     variant: "destructive",
@@ -27,8 +27,8 @@ const InputForm = ({ onSubmit }: any) => {
   //   });
   //   router.push("/");
   // };
-  const form = useForm<z.infer<typeof ExInSchema>>({
-    resolver: zodResolver(ExInSchema),
+  const form = useForm<z.infer<typeof IncomeSchema>>({
+    resolver: zodResolver(IncomeSchema),
     defaultValues: {
       title: "",
       description: "",
@@ -102,4 +102,4 @@ const InputForm = ({ onSubmit }: any) => {
   );
 };
 
-export default InputForm;
+export default IncomeForm;
