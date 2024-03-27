@@ -54,7 +54,7 @@ export const ExpenseSchema = z.object({
     amount: z.string().min(1,{
         message: "Enter your amount"
     }),
-    category: z.enum(["Entertainment","Food","Fuel","Others"])
+    category: z.enum(["Entertainment","Food","Fuel","Others"]),
 })
 
 export type ExpenseType = z.infer<typeof ExpenseSchema>

@@ -17,7 +17,6 @@ export const incValues = Object.values(existInc);
 export const accValues = Object.values(existAccount);
 
 export default class Dbcontroller {
-
   static onAddExp = (value: ExpenseType) => {
     if (existExp) {
       const emailValue = Object.values(existExp);
@@ -31,7 +30,15 @@ export default class Dbcontroller {
     localStorage.setItem("Fin_Exp_Add", JSON.stringify(existExp));
   };
 
-  static onAddInc = (value: IncomeType, callBack:()=>void) => {
+  static onDeleteExp = (value: ExpenseType) => {
+    let expData = JSON.parse(localStorage.getItem("Fin_Exp_Add")!)
+    const updateExpense = {
+      ...expData,
+    }
+    localStorage.setItem("Fin_Exp_Add", JSON.stringify(updateExpense));
+  };
+
+  static onAddInc = (value: IncomeType, callBack: () => void) => {
     if (existInc) {
       const emailValue = Object.values(existInc);
       for (const id of emailValue) {
@@ -43,12 +50,12 @@ export default class Dbcontroller {
     existInc.push(value);
     localStorage.setItem("Fin_Inc_Add", JSON.stringify(existInc));
     callBack();
-    return existInc
+    return existInc;
   };
 
-  static onLogout = (callBack:()=>void) =>{
+  static onLogout = () => {
     localStorage.setItem("Fin_LoggeIn_ Key", JSON.stringify(false));
-  }
+  };
 
   static onRegistration = (value: RegisterType) => {
     if (existAccount) {
@@ -66,15 +73,12 @@ export default class Dbcontroller {
   static onLoggIn = (value: LogggedInType) => {
     const loggIn =
       existAccount?.filter((ud: RegisterType) => {
-        return (
-          ud.email == value.email &&
-          ud.password == value.password
-        );
+        return ud.email == value.email && ud.password == value.password;
       })?.length > 0;
     if (loggIn) {
       localStorage.setItem("Fin_LoggeIn_ Key", JSON.stringify(true));
     } else {
-      alert ("Invalid credentials");
+      alert("Invalid credentials");
     }
   };
 }

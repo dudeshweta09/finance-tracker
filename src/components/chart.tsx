@@ -1,6 +1,6 @@
 import { Chart as chartjs, ArcElement, Tooltip, Legend } from "chart.js";
 import { Doughnut } from "react-chartjs-2";
-import { expValues } from "@/app/db-controller";
+import { expValues } from "@/components/db-controller";
 
 chartjs.register(ArcElement, Tooltip, Legend);
 

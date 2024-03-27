@@ -14,7 +14,7 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import Dbcontroller, { existAccount } from "@/app/db-controller";
+import Dbcontroller, { existAccount } from "@/components/db-controller";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {

@@ -10,13 +10,14 @@ import {
   faIndianRupeeSign,
 } from "@fortawesome/free-solid-svg-icons";
 import Model from "@/components/modal";
-import Dbcontroller from "../db-controller";
-import { existInc, existExp, expValues, incValues } from "../db-controller";
+import Dbcontroller from "../../components/db-controller";
+import { existInc, existExp, expValues, incValues } from "../../components/db-controller";
 import {ExpDisplay, IncDisplay} from "@/components/trans-display";
 import { IncomeType, ExpenseType } from "../../../schema";
 import { useRouter } from "next/navigation";
 import IncomeForm from "@/components/income-form";
 import ExpenseForm from "@/components/expense-form";
+import AuthGuard from "@/components/auth-guard";
 
 const TrackerPage = () => {
   const [incomeReceived, setIncomeReceived] = useState("0");
@@ -24,7 +25,8 @@ const TrackerPage = () => {
   const [isIncClicked, setIsIncClicked] = useState(false);
   const [existIncome, setExistIncome] = useState(existInc);
   const router = useRouter();
-  useEffect(() => {
+
+    useEffect(() => {
     let temp1 = existIncome.map(function (item: any) {
       return parseFloat(item.amount);
     });
@@ -49,6 +51,7 @@ const TrackerPage = () => {
   };
 
   return (
+    <AuthGuard>
     <>
       {isIncClicked && (
         <Model show={isIncClicked} onClose={setIsIncClicked}>
@@ -123,6 +126,7 @@ const TrackerPage = () => {
         </main>
       </div>
     </>
+    </AuthGuard>
   );
 };
 

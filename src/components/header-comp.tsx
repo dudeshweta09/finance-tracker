@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartPie } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import Dbcontroller, { existAccount } from "@/app/db-controller";
+import Dbcontroller, { existAccount } from "@/components/db-controller";
 import { RegisterType } from "../../schema";
 import { useRouter } from "next/navigation";
 
@@ -11,6 +11,10 @@ const HeaderComp = () => {
   const [userName, setUserName] = useState("");
   const router = useRouter();
 
+  const handleLogOut = () =>{
+    Dbcontroller.onLogout();
+    router.push("/")
+  }
   useEffect(() => {
     const loggIn = existAccount?.filter((ud: RegisterType) => {
       setUserName(ud.firstName);
@@ -40,9 +44,7 @@ const HeaderComp = () => {
           </div>
           <div>
             <Button
-            onClick={()=>Dbcontroller.onLogout(()=>{
-              router.push("/");          
-            })}
+            onClick={handleLogOut}
             className="px-4 py-2 text-white bg-red-600 border-red-600 hover:bg-red-400 rounded-xl">
               Sign Out
             </Button>

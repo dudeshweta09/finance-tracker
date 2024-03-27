@@ -1,9 +1,17 @@
-import React from 'react'
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {faFilePen, faIndianRupeeSign, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {existExp} from '@/components/db-controller';
+import { ExpenseType } from '../../schema';
+
 
 export const ExpDisplay = ({title, amount}: any) => {
-  return (
+
+    function handleDelete (value: ExpenseType){
+      const updatedExpense = existExp.splice(value.title,1)
+      localStorage.setItem("Fin_Exp_Add",JSON.stringify(updatedExpense));
+    }
+
+    return (
           <div>
         <div className='flex items-center justify-between px-4 py-4 bg-slate-600 rounded-3xl my-2'>
             <div className='flex items-center gap-2'>
@@ -12,7 +20,7 @@ export const ExpDisplay = ({title, amount}: any) => {
             </div>
             <div className='flex items-center hover:bg-white w-20 rounded transition-all duration-500 mx-auto px-5 gap-2'>
               <FontAwesomeIcon className='text-slate-600 hover:text-black transition-all duration-500' icon={faFilePen}/>
-              <FontAwesomeIcon className='text-slate-600 hover:text-black transition-all duration-500' icon={faTrashCan}/>
+             <FontAwesomeIcon onClick={handleDelete} className='text-slate-600 hover:text-black transition-all duration-500' icon={faTrashCan}/>
             </div>
                 <p className=''><FontAwesomeIcon  icon={faIndianRupeeSign}/>{amount}</p>
         </div>

@@ -16,7 +16,7 @@ import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import CardWrapper from "./card-wrapper";
-import { existAccount } from "@/app/db-controller";
+import { existAccount } from "@/components/db-controller";
 
 const RegisterForm = () => {
   const { toast } = useToast();
