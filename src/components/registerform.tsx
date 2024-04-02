@@ -16,33 +16,12 @@ import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import CardWrapper from "./card-wrapper";
-import { existAccount } from "@/components/db-controller";
+import Dbcontroller from "@/components/db-controller";
 
 const RegisterForm = () => {
+  const dbController = new Dbcontroller();
   const { toast } = useToast();
   const router = useRouter();
-
-const onRegistration = (value: RegisterType) => {
-
-    if (existAccount) {
-      const emailValue = Object.values(existAccount);
-      for (const id of emailValue) {
-        if (id.email == value.email) {
-          return toast({
-        variant: "destructive",
-        description: "Account already exist",
-      });
-        }
-      }
-    }
-    existAccount.push(value);
-    localStorage.setItem("Fin_Add_Account", JSON.stringify(existAccount));
-    toast({
-        variant: "destructive",
-        description: "Registration submitted successfully",
-      });
-      router.push("/");
-  };
 
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
@@ -58,7 +37,14 @@ const onRegistration = (value: RegisterType) => {
     return (
     <CardWrapper label="Create an account" title="Register" backbuttonhref="/" backbuttonlabel="Back to login">
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onRegistration)}>
+      <form onSubmit={form.handleSubmit((data:RegisterType)=>{
+        dbController.onRegistration(data,()=>{
+          toast({
+            description: "Registration done!"
+          })
+          router.push("/")
+        })
+      })}>
         <div>
           <FormField
             control={form.control}

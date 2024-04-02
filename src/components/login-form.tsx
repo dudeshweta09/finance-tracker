@@ -14,36 +14,13 @@ import {
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
 import { useToast } from "@/components/ui/use-toast";
-import Dbcontroller, { existAccount } from "@/components/db-controller";
+import Dbcontroller from "@/components/db-controller";
 import { useRouter } from "next/navigation";
 
 const LoginForm = () => {
+  const dbController = new Dbcontroller()
   const { toast } = useToast();
   const router = useRouter();
-
-  const onLoggIn = (value: LogggedInType) => {
-    const loggIn =
-      existAccount?.filter((ud: RegisterType) => {
-        return (
-          ud.email == value.email &&
-          ud.password == value.password &&
-          ud.confirmpassword == ud.password
-        );
-      })?.length > 0;
-    if (loggIn) {
-      localStorage.setItem("Fin_LoggeIn_ Key", JSON.stringify(true));
-      toast({
-        variant: "destructive",
-        description: "Log-In successfully",
-      });
-      router.push("http://localhost:3000/trackerpage");
-    } else {
-      toast({
-        variant: "destructive",
-        description: "Invalid Credentials",
-      });
-    }
-  };
 
   const form = useForm<z.infer<typeof LoggedInSchema>>({
     resolver: zodResolver(LoggedInSchema),
@@ -60,7 +37,14 @@ const LoginForm = () => {
       backbuttonlabel="New User! Register Now"
     >
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onLoggIn)}>
+        <form onSubmit={form.handleSubmit((data:LogggedInType)=>{
+          dbController.onLoggIn(data,()=>{
+            toast({
+              description: "Loggin Successfully"
+            })
+            router.push("/trackerpage")
+          })
+        })}>
           <div>
             <FormField
               control={form.control}

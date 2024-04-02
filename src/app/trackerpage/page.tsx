@@ -11,7 +11,6 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import Model from "@/components/modal";
 import Dbcontroller from "../../components/db-controller";
-import { existInc, existExp, expValues, incValues } from "../../components/db-controller";
 import {ExpDisplay, IncDisplay} from "@/components/trans-display";
 import { IncomeType, ExpenseType } from "../../../schema";
 import { useRouter } from "next/navigation";
@@ -20,28 +19,37 @@ import ExpenseForm from "@/components/expense-form";
 import AuthGuard from "@/components/auth-guard";
 
 const TrackerPage = () => {
+  const dbController = new Dbcontroller();
+
   const [incomeReceived, setIncomeReceived] = useState("0");
   const [isExpclicked, setIsExpClicked] = useState(false);
   const [isIncClicked, setIsIncClicked] = useState(false);
-  const [existIncome, setExistIncome] = useState(existInc);
+  const [existIncome, setExistIncome] = useState(
+    dbController.getCurrentExistingIncome()
+  );
+  const [existExp, setExistExp] = useState(
+    dbController.getCurrentExistingExpense()
+  )
   const router = useRouter();
 
     useEffect(() => {
-    let temp1 = existIncome.map(function (item: any) {
-      return parseFloat(item.amount);
-    });
-    let temp2 = existExp.map(function (item: any) {
-      return parseFloat(item.amount);
-    });
-    let sum1 = temp1.reduce(function (prev: any, next: any) {
-      return prev + next;
-    }, 0);
-    let sum2 = temp2.reduce(function (prev: any, next: any) {
-      return prev + next;
-    }, 0);
-    let sum3 = sum1 - sum2;
-    setIncomeReceived(sum3.toString());
-  }, [incomeReceived,setIncomeReceived,existExp,existIncome]);
+    const currentIncome  = dbController.getCurrentExistingIncome()
+    const currentExpense = dbController.getCurrentExistingExpense()
+
+    const totalIncome = currentIncome.reduce((prev:any, next:any)=>{
+      return prev + parseFloat(next.amount)
+    },0)
+
+    const totalExpense = currentExpense.reduce((prev:any, next:any)=>{
+      return prev + parseFloat(next.amount)
+    },0)
+
+    const balance = totalIncome - totalExpense
+    setIncomeReceived(balance.toString())
+    }, [dbController.existingIncome,
+    dbController.existingExpense,
+  setIncomeReceived,
+  ]);
 
   const onExpense = () => {
       setIsExpClicked(true);
@@ -56,20 +64,23 @@ const TrackerPage = () => {
       {isIncClicked && (
         <Model show={isIncClicked} onClose={setIsIncClicked}>
           <IncomeForm onSubmit={(data:IncomeType)=>{
-           const updatedIncome = Dbcontroller.onAddInc(data,()=>{
-              console.log(data);
+           dbController.onAddInc(data,()=>{
               setIsIncClicked(false)
-              setTimeout(() => {
-                router.push("/trackerpage")
-              }, 1000);
+              setExistIncome(dbController.getCurrentExistingIncome())
+              router.refresh()
             })
-            setExistIncome(updatedIncome);
           }} />
         </Model>
       )}
       {isExpclicked && (
         <Model show={isExpclicked} onClose={setIsExpClicked}>
-          <ExpenseForm onSubmit={Dbcontroller.onAddExp}/>
+          <ExpenseForm onSubmit={(data:ExpenseType)=>{
+            dbController.onAddExp(data,()=>{
+              setIsExpClicked(false)
+              setExistExp(dbController.getCurrentExistingExpense())
+              router.refresh()
+            })
+          }}/>
         </Model>
       )}
       <div className="bg-slate-900 h-full text-white">
@@ -102,7 +113,7 @@ const TrackerPage = () => {
             <div className="grid grid-cols-2 gap-8">
               <div className="py-6">
                 <h3 className="text-2xl">My Income</h3>
-                {incValues.map((income: any) => {
+                {existIncome.map((income: any) => {
                   return (
                     <IncDisplay title={income.title} amount={income.amount} />
                   );
@@ -110,7 +121,7 @@ const TrackerPage = () => {
               </div>
               <div className="py-6">
                 <h3 className="text-2xl">My Expense</h3>
-                {expValues.map((expense: any) => {
+                {existExp.map((expense: any) => {
                   return (
                     <ExpDisplay title={expense.title} amount={expense.amount} />
                   );

@@ -4,7 +4,7 @@ const Model = ({ show, onClose, children }:any) => {
   return (
     <div
     className="absolute top-0 left-0 w-full h-full z-10 text-white translate-y-4 transition duration-500">
-      <div className="container max-w-2xl mx-auto h-[80vh] rounded-3xl bg-slate-800 py-6 px-4">
+        <div className="container max-w-2xl mx-auto h-[80vh] rounded-3xl bg-slate-800 py-6 px-4">
         <button
         onClick={()=>{
             onClose(false);

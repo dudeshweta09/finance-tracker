@@ -3,76 +3,78 @@ import {
   IncomeType,
   ExpenseType,
   LogggedInType,
-  RegisterSchema,
   RegisterType,
 } from "../../schema";
 
-export const existExp = JSON.parse(localStorage.getItem("Fin_Exp_Add") || "[]");
-export const existInc = JSON.parse(localStorage.getItem("Fin_Inc_Add") || "[]");
-export const existAccount = JSON.parse(
-  localStorage.getItem("Fin_Add_Account") || "[]"
-);
-export const expValues = Object.values(existExp);
-export const incValues = Object.values(existInc);
-export const accValues = Object.values(existAccount);
-
 export default class Dbcontroller {
-  static onAddExp = (value: ExpenseType) => {
-    if (existExp) {
-      const emailValue = Object.values(existExp);
-      for (const id of emailValue) {
+
+  existingIncome: IncomeType[] = []
+  existingExpense: ExpenseType[] = []
+  existingAccount: RegisterType[] = []
+
+  constructor(){
+    this.existingIncome = JSON.parse(localStorage.getItem("Fin_Inc_Add")!) || []
+    this.existingExpense = JSON.parse(localStorage.getItem("Fin_Exp_Add")!) || []
+    this.existingAccount = JSON.parse(localStorage.getItem("Fin_Add_Account")!) || []
+  }
+  onAddExp = (value: ExpenseType, callBack: ()=> void) => {
+    if (this.existingExpense) {
+      const expValue = Object.values(this.existingExpense);
+      for (const id of expValue) {
         if (id.title == value.title) {
-          return;
+          return alert("title exist")
         }
       }
     }
-    existExp.push(value);
-    localStorage.setItem("Fin_Exp_Add", JSON.stringify(existExp));
-  };
-
-  static onDeleteExp = (value: ExpenseType) => {
-    let expData = JSON.parse(localStorage.getItem("Fin_Exp_Add")!)
-    const updateExpense = {
-      ...expData,
-    }
-    localStorage.setItem("Fin_Exp_Add", JSON.stringify(updateExpense));
-  };
-
-  static onAddInc = (value: IncomeType, callBack: () => void) => {
-    if (existInc) {
-      const emailValue = Object.values(existInc);
-      for (const id of emailValue) {
-        if (id.title == value.title) {
-          return;
-        }
-      }
-    }
-    existInc.push(value);
-    localStorage.setItem("Fin_Inc_Add", JSON.stringify(existInc));
+    this.existingExpense.push(value);
+    localStorage.setItem("Fin_Exp_Add", JSON.stringify(this.existingExpense));
     callBack();
-    return existInc;
   };
 
-  static onLogout = () => {
+  onDeleteExp = (title: string, callBack: ()=> void) => {
+    let expData = JSON.parse(localStorage.getItem("Fin_Exp_Add")! || "[]")
+  this.existingExpense = expData.filter((ud:ExpenseType)=>{
+    return ud.title !== title
+  })
+  localStorage.setItem("Fin_Exp_Add", JSON.stringify(this.existingExpense))
+  callBack();
+  };
+
+  
+  onAddInc = (value: IncomeType, callBack: () => void) => {
+    if (this.existingIncome) {
+      const incValue = Object.values(this.existingIncome);
+      for (const id of incValue) {
+        if (id.title == value.title) {
+          return alert("title already exist")
+        }
+      }
+    }
+    this.existingIncome.push(value);
+    localStorage.setItem("Fin_Inc_Add", JSON.stringify(this.existingIncome));
+    callBack();
+  };
+
+   onLogout = () => {
     localStorage.setItem("Fin_LoggeIn_ Key", JSON.stringify(false));
   };
 
-  static onRegistration = (value: RegisterType) => {
-    if (existAccount) {
-      const emailValue = Object.values(existAccount);
-      for (const id of emailValue) {
+  onRegistration = (value: RegisterType, callBack: () => void) => {
+    if (this.existingAccount) {
+      const accValue = Object.values(this.existingAccount);
+      for (const id of accValue) {
         if (id.email == value.email) {
           return alert("Account already exist");
         }
       }
     }
-    existAccount.push(value);
-    localStorage.setItem("Fin_Add_Account", JSON.stringify(existAccount));
+    this.existingAccount.push(value);
+    localStorage.setItem("Fin_Add_Account", JSON.stringify(this.existingAccount));
   };
 
-  static onLoggIn = (value: LogggedInType) => {
+  onLoggIn = (value: LogggedInType, callBack: () => void) => {
     const loggIn =
-      existAccount?.filter((ud: RegisterType) => {
+      this.existingAccount?.filter((ud: RegisterType) => {
         return ud.email == value.email && ud.password == value.password;
       })?.length > 0;
     if (loggIn) {
@@ -80,5 +82,14 @@ export default class Dbcontroller {
     } else {
       alert("Invalid credentials");
     }
+    callBack();
   };
+
+  getCurrentExistingIncome = () => {
+    return this.existingIncome
+  }
+
+  getCurrentExistingExpense = () => {
+    return this.existingExpense
+  }
 }

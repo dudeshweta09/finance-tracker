@@ -13,21 +13,9 @@ import {
 import { IncomeSchema} from "../../schema";
 import { Input } from "./ui/input";
 import { Button } from "./ui/button";
-// import { useToast } from "@/components/ui/use-toast";
-// import { useRouter } from "next/navigation";
 
 const IncomeForm = ({ onSubmit }: any) => {
-  // const { toast } = useToast();
-  // const router = useRouter();
-  // const handleToast = () => {
-  //   toast({
-  //     variant: "destructive",
-  //     title: "Entry",
-  //     description: "Entry submitted successfully",
-  //   });
-  //   router.push("/");
-  // };
-  const form = useForm<z.infer<typeof IncomeSchema>>({
+    const form = useForm<z.infer<typeof IncomeSchema>>({
     resolver: zodResolver(IncomeSchema),
     defaultValues: {
       title: "",

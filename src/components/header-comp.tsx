@@ -3,20 +3,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChartPie } from "@fortawesome/free-solid-svg-icons";
 import { Button } from "./ui/button";
 import { useEffect, useState } from "react";
-import Dbcontroller, { existAccount } from "@/components/db-controller";
+import Dbcontroller from "@/components/db-controller";
 import { RegisterType } from "../../schema";
 import { useRouter } from "next/navigation";
 
 const HeaderComp = () => {
+  const dbController = new Dbcontroller()
   const [userName, setUserName] = useState("");
   const router = useRouter();
 
   const handleLogOut = () =>{
-    Dbcontroller.onLogout();
+    dbController.onLogout()
     router.push("/")
   }
   useEffect(() => {
-    const loggIn = existAccount?.filter((ud: RegisterType) => {
+    const loggIn = dbController.existingAccount?.filter((ud: RegisterType) => {
       setUserName(ud.firstName);
     });
   },[]);
